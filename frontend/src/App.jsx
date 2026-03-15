@@ -71,7 +71,7 @@ function App() {
     setStep('loading');
     
     try {
-      const response = await axios.get('http://localhost:8080/chat/genQue', {
+      const response = await axios.get('https://quizzer-kypx.onrender.com/chat/genQue', {
         params: { n: numQuestions, q: topic }
       });
 
