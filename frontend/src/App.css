@@ -1,0 +1,5 @@
+/* Neutralize default App.css */
+#root {
+  margin: 0 auto;
+  text-align: left;
+}
