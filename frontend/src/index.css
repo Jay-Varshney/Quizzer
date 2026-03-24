@@ -178,5 +178,73 @@ button:active {
   text-align: center;
   display: block;
   margin: 1rem 0;
-  color: var(--secondary);
+}
+
+/* Loading Animation Styles */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.loader-orbit {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 2.5rem;
+  animation: floatOrbit 2s ease-in-out infinite alternate;
+}
+
+.loader-orb {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #818cf8, var(--primary));
+  box-shadow: 0 0 20px var(--primary);
+  animation: pulseOrb 2s ease-in-out infinite alternate;
+  z-index: 2;
+}
+
+.loader-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: var(--secondary);
+  border-bottom-color: var(--secondary);
+  animation: spinRing 2s linear infinite;
+  opacity: 0.8;
+  z-index: 1;
+}
+
+
+@keyframes floatOrbit {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-10px); }
+}
+
+@keyframes pulseOrb {
+  0% { transform: scale(0.95); box-shadow: 0 0 15px rgba(99, 102, 241, 0.4); }
+  100% { transform: scale(1.05); box-shadow: 0 0 30px rgba(99, 102, 241, 0.8); }
+}
+
+@keyframes spinRing {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  animation: pulseText 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulseText {
+  0% { opacity: 0.7; transform: scale(0.98); }
+  100% { opacity: 1; transform: scale(1.02); }
 }

@@ -1,18 +1,14 @@
 import React from 'react';
 
-const Loading = () => {
+const Loading = ({ text = "Generating Quiz...", subtext = "Our AI is crafting the perfect questions for you." }) => {
   return (
     <div className="glass-card loading-container">
-      <div className="cube-loader">
-        <div className="cube-face cube-face-front"></div>
-        <div className="cube-face cube-face-back"></div>
-        <div className="cube-face cube-face-right"></div>
-        <div className="cube-face cube-face-left"></div>
-        <div className="cube-face cube-face-top"></div>
-        <div className="cube-face cube-face-bottom"></div>
+      <div className="loader-orbit">
+        <div className="loader-ring"></div>
+        <div className="loader-orb"></div>
       </div>
-      <h2 className="loading-text">Generating Quiz...</h2>
-      <p className="loading-subtext">Our AI is crafting the perfect questions for you.</p>
+      <h2 className="loading-text">{text}</h2>
+      <p className="loading-subtext">{subtext}</p>
     </div>
   );
 };

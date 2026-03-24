@@ -8,11 +8,15 @@ import axios from 'axios';
 
 function App() {
   const [step, setStep] = useState('setup'); // setup, taking, results
+  // const [step, setStep] = useState('loading'); // setup, taking, results
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
   const [lastConfig, setLastConfig] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [suggestion, setsuggestion] = useState([]);
+  const [loadingText, setLoadingText] = useState("Generating Quiz...");
+  const [loadingSubtext, setLoadingSubtext] = useState("Our AI is crafting the perfect questions for you.");
 
   //2nd attempt works but messy and uses 2 functions
   // const generateQuestions = async (topic, num) => {
@@ -68,10 +72,12 @@ function App() {
     setLastConfig({ topic, numQuestions });
     setUserAnswers([]);
     setCurrentQuestionIndex(0);
+    setLoadingText("Generating Quiz...");
+    setLoadingSubtext("Our AI is crafting the perfect questions for you.");
     setStep('loading');
     
     try {
-      const response = await axios.get('https://quizzer-kypx.onrender.com/chat/genQue', {
+      const response = await axios.get('http://localhost:8080/chat/genQue', {
         params: { n: numQuestions, q: topic }
       });
 
@@ -92,14 +98,36 @@ function App() {
     
   };
 
-  const handleNextQuestion = (answer) => {
+  const handleNextQuestion = async (answer) => {
     const newAnswers = [...userAnswers, answer];
     setUserAnswers(newAnswers);
 
     if (currentQuestionIndex + 1 < questions.length) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      setStep('results');
+      //call backend for evaluation
+      const attempts = [];
+      for(let i = 0 ; i< questions.length; i++){
+        //here accessing the ith index does not give an error as js is dynamically typed unlike c++ as it is static
+        attempts[i] = {question: questions[i],answer: newAnswers[i]};
+      }
+      setLoadingText("Evaluating Answers...");
+      setLoadingSubtext("Our AI is reviewing your responses.");
+      setStep('loading');
+      try{
+        const load = {
+          totalQuestionCount : questions.length,
+          attempts : attempts
+        };
+        const response = await axios.post('http://localhost:8080/chat/evaluate', load);
+        console.log(response);
+        setsuggestion(response.data);
+        setStep('results');
+      }catch(error){
+        console.error("Evaluation failed:", error);
+        setStep('setup');
+        alert("Error evaluating answers. Please try again.");
+      }
     }
   };
 
@@ -130,7 +158,7 @@ function App() {
       )}
 
       {step === 'loading' && (
-        <Loading key="loading-screen" />
+        <Loading key="loading-screen" text={loadingText} subtext={loadingSubtext} />
       )}
 
       {step === 'taking' && (
@@ -149,6 +177,7 @@ function App() {
           userAnswers={userAnswers}
           onRestart={handleRestart}
           onRepeat={handleRepeat}
+          suggestion={suggestion}
         />
       )}
     </main>

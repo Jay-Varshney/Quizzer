@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Results = ({ questions, userAnswers, onRestart, onRepeat }) => {
+const Results = ({ questions, userAnswers, onRestart, onRepeat, suggestion}) => {
   // Simple scoring logic for demo - in a real app, this would be more complex
   // since these are descriptive answers. We'll simulate a score.
-  const score = Math.floor(Math.random() * questions.length) + 1;
+  const score = suggestion.totalScore;
 
   return (
     <div className="glass-card">
@@ -20,8 +20,14 @@ const Results = ({ questions, userAnswers, onRestart, onRepeat }) => {
           <div key={i} className="result-item">
             <h3 style={{ marginBottom: '0.5rem' }}>{i + 1}. {q}</h3>
             <p><strong>Your Answer:</strong> {userAnswers[i]}</p>
-            <div className="tip">
-              <strong>💡 Suggestion:</strong> {q}
+            <div 
+              className="tip"
+              style={{
+                background: suggestion.results[i].score === 0 ? 'rgba(255, 50, 70, 0.25)' : 'rgba(10, 220, 120, 0.25)',
+                color: suggestion.results[i].score === 0 ? '#ff8a98' : '#69f0ae'
+              }}
+            >
+              <strong>💡 Suggestion:</strong> {suggestion.results[i].detailedFeedback}
             </div>
           </div>
         ))}
