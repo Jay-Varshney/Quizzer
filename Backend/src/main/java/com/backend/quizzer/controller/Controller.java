@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("chat")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class Controller {
 
     private final ChatService chatService;
