@@ -16,7 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("chat")
-@CrossOrigin(origins = "*")
+// @CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {
+        RequestMethod.GET,
+        RequestMethod.POST,
+        RequestMethod.OPTIONS
+})
 public class Controller {
 
     private final ChatService chatService;
