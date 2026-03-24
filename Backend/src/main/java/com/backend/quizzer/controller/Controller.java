@@ -1,4 +1,5 @@
 package com.backend.quizzer.controller;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.quizzer.dto.Evaluate;
@@ -13,17 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
-
 @RestController
 @RequestMapping("chat")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin
 public class Controller {
 
     private final ChatService chatService;
 
-    Controller(ChatService chatService){
+    Controller(ChatService chatService) {
         this.chatService = chatService;
     }
 
@@ -36,11 +34,10 @@ public class Controller {
     public Question generaQuestion(@RequestParam("n") int num, @RequestParam("q") String q) {
         return chatService.genQue(num, q);
     }
-    
+
     @PostMapping("/evaluate")
     public Evaluation evaluateTheAnswers(@RequestBody Evaluate eval) {
         return chatService.evaluate(eval);
     }
-    
 
 }
